@@ -26,13 +26,22 @@ public class Init implements CommandLineRunner {
 
 		if (userRepository.findПожалуйстаByEmailIgnoreCase("episarenko@croc.ru").isEmpty()) {
 			log.info("Creating initial user");
-			User user = new User()
-					.setFirstName("Evgeny")
-					.setLastName("Pisarenko")
-					.setEmail("episarenko@croc.ru");
-
-			Long userId = userRepository.save(user).getId();
+			Long userId = createUser("Evgeny", "Pisarenko", "episarenko@croc.ru");
+			log.info("Created user id: {}", userId);
+			
+			userId = createUser("Andrei", "Kogun", "akogun@croc.ru");
 			log.info("Created user id: {}", userId);
 		}
+	}
+
+	private Long createUser(String fName, String sName, String email) {
+		User user = new User()
+				.setFirstName(fName)
+				.setLastName(sName)
+				.setEmail(email)
+				.setPassword("");
+
+		Long userId = userRepository.save(user).getId();
+		return userId;
 	}
 }

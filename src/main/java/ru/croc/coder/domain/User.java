@@ -1,12 +1,9 @@
 package ru.croc.coder.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@Table(name = "User")
+@Entity(name = "User")
 public class User {
 
 	@Id
@@ -15,6 +12,18 @@ public class User {
 
 	@Column(unique = true, nullable = false)
 	private String email;
+	
+	@Column(nullable = false, length = 12)
+	private String password;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public User setPassword(String password) {
+		this.password = password;
+		return this;
+	}
 
 	private String firstName;
 
@@ -55,4 +64,11 @@ public class User {
 		this.lastName = lastName;
 		return this;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + "]";
+	}
+	
 }
