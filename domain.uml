@@ -1,0 +1,48 @@
+@startuml
+' https://plantuml-editor.kkeisuke.com/
+
+title CROC Coder
+
+entity User {
+  id
+  email
+  password
+}
+
+entity Student {
+}
+
+entity Teacher {
+}
+
+User <|-- Student
+User <|-- Teacher
+
+enum ProblemLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+entity Problem {
+  id
+  level
+  description
+  template
+  maxAttempts
+}
+
+Problem .. ProblemLevel: level
+Problem "N" -- "1" User: author
+
+entity Solution {
+  id
+  time
+  code
+  passed
+}
+
+Solution "N" --* "1" User: author
+Solution "N" --o "1" Problem: problem
+
+@enduml
