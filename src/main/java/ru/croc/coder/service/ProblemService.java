@@ -3,7 +3,6 @@ package ru.croc.coder.service;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +19,32 @@ import ru.croc.coder.repository.UserRepository;
 public class ProblemService {
 
 	private static final Random rnd = new Random(System.currentTimeMillis());
-
-	@Autowired
+	
 	private UserRepository userRepository;
 
-	@Autowired
 	private ProblemRepository problemRepository;
 
-	@Autowired
 	private SolutionRepository solutionRepository;
+	
+	private UserContext userContext;
 
-	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public Solution submit(Long userId, Long problemId, String code) {
-		User user = userRepository.findById(userId)
-				.orElseThrow(NotFoundException::new);
+	public ProblemService(UserRepository userRepository, ProblemRepository problemRepository,
+			SolutionRepository solutionRepository, UserContext userContext) {
+		this.userRepository = userRepository;
+		this.problemRepository = problemRepository;
+		this.solutionRepository = solutionRepository;
+		this.userContext = userContext;
+	}
+
+	@Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ProblemConstraintException.class)
+	public Solution submit(Long problemId, String code) {
+		
+		User user = userContext.getCurrentUser();
+		
 		Problem problem = problemRepository.findById(problemId)
 				.orElseThrow(NotFoundException::new);
+		
+		userRepository.save(user.setAttemptsCount(user.getAttemptsCount() + 1)); 
 
 		if (problem.getMaxAttempts() != null) {
 			long attempts = solutionRepository.countByAuthorAndProblem(user, problem);

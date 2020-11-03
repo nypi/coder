@@ -29,6 +29,8 @@ public class User {
 
 	private String lastName;
 
+	private Integer attemptsCount = 0;
+
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +71,15 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + "]";
+	}
+
+	public Integer getAttemptsCount() {
+		return attemptsCount;
+	}
+
+	public User setAttemptsCount(Integer attemptsCount) {
+		this.attemptsCount = attemptsCount;
+		return this;
 	}
 	
 }
