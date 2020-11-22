@@ -2,7 +2,7 @@ package ru.croc.coder.domain;
 
 import javax.persistence.*;
 
-@Table(name = "User")
+@Table(name = "\"User\"")
 @Entity(name = "User")
 public class User {
 
