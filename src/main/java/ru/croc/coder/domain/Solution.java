@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,8 +33,12 @@ public class Solution {
 
 	private Code code;
 
-	@Column(nullable = false)
-	private Boolean passed = false;
+	@Column(name = "passed")
+	private Boolean passed;
+
+	@Enumerated(EnumType.STRING)
+	@Column
+	private ProcessStatus checkStatus;
 
 	public Long getId() {
 		return id;
@@ -85,6 +91,15 @@ public class Solution {
 
 	public Solution setPassed(Boolean passed) {
 		this.passed = passed;
+		return this;
+	}
+
+	public ProcessStatus getCheckStatus() {
+		return checkStatus;
+	}
+
+	public Solution setCheckStatus(ProcessStatus checkStatus) {
+		this.checkStatus = checkStatus;
 		return this;
 	}
 }
